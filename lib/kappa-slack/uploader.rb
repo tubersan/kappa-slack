@@ -88,19 +88,18 @@ module KappaSlack
       response['emotes'].map do |emote|
         {
           name: emote['code'].parameterize,
-          url: url_template.gsub('{{id}}', emote['id'])
+          url: url_template.gsub('{{id}}', emote['id'].to_s)
         }
       end
     end
 
     def twitch_emotes
-      response = JSON.parse(http.get_content('https://twitchemotes.com/api_cache/v2/global.json'))
-      url_template = response['template']['small']
-
-      response['emotes'].map do |name, emote|
+      response = JSON.parse(http.get_content('https://twitchemotes.com/api_cache/v3/global.json'))
+      url_template = "https://static-cdn.jtvnw.net/emoticons/v1/{{id}}/1.0"
+      response.map do |_, emote|
         {
-          name: name.parameterize,
-          url: url_template.gsub('{image_id}', emote['image_id'].to_s)
+          name: emote['code'].parameterize,
+          url: url_template.gsub('{{id}}', emote['id'].to_s)
         }
       end
     end
