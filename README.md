@@ -30,6 +30,7 @@ bin/kappa-slack --slack-team-name=kappa --slack-email=kappa@twitch.tv --slack-pa
 
 Optionally, you can pass these options to skip certain emotes:
 
+* `--skip-twitch-emotes` (default: `false`) Skips emotes from TwitchTV
 * `--skip-bttv-emotes` (default: `false`) Skips emotes from BetterTTV
 * `--skip-one-letter-emotes` (default: `true`) Skips single letter emotes, like `D:`
 
