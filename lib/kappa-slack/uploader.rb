@@ -4,6 +4,7 @@ require 'httpclient/webagent-cookie'
 require 'json'
 require 'fileutils'
 require 'digest/sha1'
+require 'io/console'
 
 module KappaSlack
   class Uploader
@@ -107,12 +108,12 @@ module KappaSlack
     def emotes
       all_emotes = twitch_emotes
       all_emotes += bttv_emotes unless skip_bttv_emotes?
+      all_emotes = all_emotes.select { |e| e[:name].length > 1 } if skip_one_letter_emotes?
 
-      if skip_one_letter_emotes?
-        all_emotes.select { |e| e[:name].length > 1 }
-      else
-        all_emotes
-      end
+      print "Really upload #{all_emotes.size.to_s} emotes? [Y/n]"
+      exit(1) if STDIN.getch == "n"
+
+      all_emotes
     end
   end
 end
