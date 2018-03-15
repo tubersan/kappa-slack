@@ -6,7 +6,7 @@ Add Kappa to your Slack.
 Setup your local copy by running:
 
 ```sh
-git clone git@github.com:calderalabs/kappa-slack.git
+git clone https://github.com/tubersan/kappa-slack.git
 cd kappa-slack
 bundle install
 ```
