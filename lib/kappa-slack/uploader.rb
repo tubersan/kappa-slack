@@ -12,11 +12,13 @@ module KappaSlack
       slack_team_name:,
       slack_email:,
       slack_password:,
+      skip_twitch_emotes:,
       skip_bttv_emotes:,
       skip_one_letter_emotes:)
       @slack_team_name = slack_team_name
       @slack_email = slack_email
       @slack_password = slack_password
+      @skip_twitch_emotes = skip_twitch_emotes
       @skip_bttv_emotes = skip_bttv_emotes
       @skip_one_letter_emotes = skip_one_letter_emotes
     end
@@ -62,6 +64,10 @@ module KappaSlack
 
     attr_reader :slack_team_name, :slack_email, :slack_password
 
+    def skip_twitch_emotes?
+      @skip_twitch_emotes
+    end
+
     def skip_bttv_emotes?
       @skip_bttv_emotes
     end
@@ -106,7 +112,8 @@ module KappaSlack
     end
 
     def emotes
-      all_emotes = twitch_emotes
+      all_emotes = Array.new
+      all_emotes += twitch_emotes unless skip_twitch_emotes?
       all_emotes += bttv_emotes unless skip_bttv_emotes?
       all_emotes = all_emotes.select { |e| e[:name].length > 1 } if skip_one_letter_emotes?
 
