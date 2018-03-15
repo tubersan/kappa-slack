@@ -37,7 +37,10 @@ module KappaSlack
 
           emotes.each do |emote|
             existing_emote = uploaded_page.search(".emoji_row:contains(':#{emote[:name]}:')")
-            next if existing_emote.present?
+            if existing_emote.present?
+                KappaSlack.logger.info "Skipping #{emote[:name]} (exists)"
+                next
+            end
             file_path = File.join(tmp_dir_path, Digest::SHA1.hexdigest(emote[:name]))
 
             File.open(file_path, 'w') do |file|
@@ -46,7 +49,10 @@ module KappaSlack
               end
             end
 
-            next if File.size(file_path) > 64 * 1024
+            if File.size(file_path) > 64 * 1024
+                KappaSlack.logger.info "Skipping #{emote[:name]} (>64KB)"
+                next
+            end
             KappaSlack.logger.info "Uploading #{emote[:name]}"
 
             uploaded_page = uploaded_page.form_with(:id => 'addemoji') do |form|
